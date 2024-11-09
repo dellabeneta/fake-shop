@@ -18,7 +18,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME}}
           password: ${{ secrets.DOCKERHUB_PASSWORD}}
 
-      - name: Contrução e envio da imagem Docker
+      - name: Construção e envio da imagem Docker
         uses: docker/build-push-action@v6
         with:
           context: ./src
@@ -48,7 +48,7 @@ jobs:
           aws-region: sa-east-1
 
       - name: Configurar o kubectl
-        run: aws eks update-kubeconfig --name fakeshop
+        run: aws eks update-kubeconfig --name eks-fakeshop
 
       - name: Deploy dos manifestos do Kubernetes
         uses: Azure/k8s-deploy@v5
