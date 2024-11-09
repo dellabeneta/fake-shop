@@ -4,16 +4,26 @@ on:
   push:
     branches: ["main"]
   workflow_dispatch:
+
 jobs:
   ci:
     runs-on: ubuntu-latest
     steps:
+      - name: Obter código do projeto
+        uses: actions/checkout@v4
+
       - name: Autenticar no Docker Hub
-        run: echo "Executando o comando Docker Login"
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME}}
+          password: ${{ secrets.DOCKERHUB_PASSWORD}}
+
       - name: Contrução da Imagem Docker
         run: echo "Executando o comando Docker Build"
+
       - name: Envio da Imagem Docker
         run: echo "Executando o comando Docker Push"
+
   cd:
     runs-on: ubuntu-latest
     needs: [ci]
