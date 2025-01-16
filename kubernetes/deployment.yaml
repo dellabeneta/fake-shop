@@ -1,0 +1,89 @@
+# BANCO DE DADOS
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgre
+spec:
+  selector:
+    matchLabels:
+      app: postgre
+  template:
+    metadata:
+      labels:
+        app: postgre
+    spec:
+      containers:
+      - name: postgre
+        image: postgres:13.16
+        ports:
+        - containerPort: 5432
+        env:
+        - name: POSTGRES_USER
+          value: "fake-shop"
+        - name: POSTGRES_PASSWORD
+          value: "Pg1234"
+        - name: POSTGRES_DB
+          value: "fake-shop"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgre
+spec:
+  selector:
+    app: postgre
+  ports:
+    - protocol: TCP
+      port: 5432
+      targetPort: 5432
+
+---
+# APLICAÇÃO
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: fakeshop
+spec:
+  selector:
+    matchLabels:
+      app: fakeshop
+  template:
+    metadata:
+      labels:
+        app: fakeshop
+    spec:
+      containers:
+      - name: fakeshop
+        image: dellabeneta/fake-shop:v1
+        ports:
+        - containerPort: 5000
+        env:
+        - name: DB_HOST
+          value: "postgre"
+        - name: DB_NAME
+          value: "fake-shop"
+        - name: DB_USER
+          value: "fakeshop"
+        - name: DB_PASSWORD
+          value: "Pg1234"
+        - name: FLASK_APP
+          value: "index.py"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: fakeshop
+spec:
+  selector:
+    app: fakeshop
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 5000
+  type: LoadBalancer
