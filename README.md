@@ -1,5 +1,9 @@
 ### Fake Shop
 
+<div align="center">
+<img src="assets/fakeshop.png"/>
+</div>
+
 Utilizei uma imagem menor e fiz os ajustes necessários no Dockerfile para atender às dependências.
 
 ```
