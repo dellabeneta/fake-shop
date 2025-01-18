@@ -6,8 +6,6 @@
 
 Bem-vindo ao Fake Shop, uma aplicação de exemplo projetada para demonstrar práticas de implantação e CI/CD usando Kubernetes e GitHub Actions.
 
-<br>
-
 ## Visão Geral da Aplicação
 
 Fake Shop é uma aplicação web que interage com um banco de dados PostgreSQL. A aplicação requer várias variáveis de ambiente para configuração:
