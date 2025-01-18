@@ -1,7 +1,7 @@
 <div align="center">
 <img src="assets/fakeshop.png"/>
 </div>
-
+<br>
 Bem-vindo ao Fake Shop, uma aplicação de exemplo projetada para demonstrar práticas de implantação e CI/CD usando Kubernetes e GitHub Actions.
 
 ## Visão Geral da Aplicação
