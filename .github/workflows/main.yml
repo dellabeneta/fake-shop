@@ -3,7 +3,10 @@ name: CI-CD
 on:
   push:
     branches: ["main"]
+    paths:
+      - "src/**" # Apenas alterações na pasta src
   workflow_dispatch:
+
 jobs:
   ci:
     runs-on: ubuntu-latest
