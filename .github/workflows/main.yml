@@ -41,9 +41,8 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: sa-east-1
 
+      - name: Configurando o Kubectl/Kubeconfig
+        run: aws eks update-kubeconfig --name eks-cluster-aula
 
-        
-      - name: Configurar o Kubectl/Kubeconfig
-        run: echo "Executando o comando AWS EKS Update Kubeconfig"
-      - name: Executar o Kubectl Apply dos Manifestos de Deploy
-        run: echo "Executando o comando Kubectl Apply"
+      - name: Aplicando o Deployment.YAML da aplicação no Cluster EKS
+        run: kubectl apply -f k8s/deployment.yaml
