@@ -52,7 +52,7 @@ spec:
     spec:
       containers:
       - name: fakeshop
-        image: dellabeneta/fake-shop:python-slim
+        image: dellabeneta/fake-shop:latest
         ports:
         - containerPort: 5000
         env:
