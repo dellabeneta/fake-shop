@@ -1,0 +1,55 @@
+name: CD Pipeline to DOKS
+
+on:
+  push:
+    branches: ["main"]
+    paths:
+      - "src/**" # Apenas alterações na pasta src
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Obtendo o código da aplicação
+        uses: actions/checkout@v4
+        
+      - name: Autenticar no Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Buildando a Imagem Docker e Efetuando o Push 
+        uses: docker/build-push-action@v6
+        with:
+          context: ./src
+          push: true
+          file: ./src/Dockerfile
+          tags: |
+            dellabeneta/fake-shop:latest
+            dellabeneta/fake-shop:v${{ github.run_number}}
+
+  cd:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Instalando a CLI para Digital Ocean direto no Linu, o doctl
+        run: |
+          curl -L https://github.com/digitalocean/doctl/releases/download/v1.79.0/doctl-1.79.0-linux-amd64.tar.gz | tar -xz -C /tmp
+          sudo mv /tmp/doctl /usr/local/bin/
+
+      - name: Autenticando na DigitalOcean
+        run: |
+          doctl auth init -t ${{ secrets.DIGITALOCEAN_TOKEN }}
+
+      - name: Obtendo o kubeconfig
+        run: |
+          doctl kubernetes cluster kubeconfig show fake-shop-cluster > kubeconfig.yaml
+          export KUBECONFIG=kubeconfig.yaml
+
+      - name: Deploy to DOKS
+        run: |
+          kubectl apply -f deployment.yaml
