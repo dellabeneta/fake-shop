@@ -53,4 +53,4 @@ jobs:
 
       - name: Deploy to DOKS
         run: |
-          kubectl apply -f deployment.yaml
+          kubectl apply -f ./k8s/deployment.yaml
