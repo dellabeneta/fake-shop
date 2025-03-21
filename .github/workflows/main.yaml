@@ -49,4 +49,4 @@ jobs:
           manifests: |
             k8s/deployment.yaml
             k8s/service.yaml
-          namespace: default
+          images: della/fake-shop:v${{ github.run_number}}
